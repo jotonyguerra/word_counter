@@ -1,30 +1,20 @@
-# YOUR CODE HERE
-require_relative "../argv_ex.rb"
-def word_counter()
-  # string.downcase.gsub(/[^a-z0-9\s]/i, '')
-  #
-  file_path = ARGV[0]
-  WORDS_COUNT = {}
-  file = File.open(file_path, "r")
-  puts "Indexing #{file_path}"
+require 'pry'
 
-  f.each_line do |line|
-    words = line.split
-    words.each do |word|
-     word.downcase.gsub(/[^a-z0-9\s]/i, '')
-     if WORDS_COUNT[word]
-      WORDS_COUNT[word] += 1
-     else
-      WORDS_COUNT[word] = 1
-     end
+def word_counter
+  filename = ARGV[0]
+  n = ARGV[1]
+  hash = Hash.new(0)
+  file = File.open(filename, 'r')
+  words = file.read.split(" ")
+  words.each do |word|
+    word.gsub(/\W/, "")
+    hash[word.downcase] += 1
   end
-end
-puts "Indexed #{file_path}"
-puts "Words count: "
-
-WORDS_COUNT.sort {|a,b| a[1] <=> b[1]}.each do |key,value|
-  puts "#{key} => #{value}"
-end
-
+  n = n.to_i
+  sorted_hash = hash.sort_by{|key, value| value}.reverse[0..n].to_h
+  sorted_hash.each do |key, value|
+    puts "#{key}: #{value}"
+  end
 
 end
+puts word_counter
